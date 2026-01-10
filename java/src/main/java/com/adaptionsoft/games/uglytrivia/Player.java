@@ -52,6 +52,6 @@ public class Player {
     }
 
     public boolean isWinner() {
-        return coins == 6;
+        return coins == Game.WINNING_COINS;
     }
 }

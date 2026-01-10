@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Game {
+    public static final int WINNING_COINS = 6;
     private static final int PLAYING_FIELDS = 12;
     private static final int COINS_PER_CORRECT_ANSWER = 1;
     private static final int MIN_PLAYERS = 2;
