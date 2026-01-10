@@ -58,16 +58,16 @@ public class Game {
         System.out.println(questionFactory.getQuestion(currentCategory).text());
     }
 
-    public boolean wasCorrectlyAnswered() {
+    public boolean correctAnswer() {
         if (currentPlayer.isInPenaltyBox()) {
             if (currentPlayer.isGettingOutOfPenaltyBox()) {
-                return extractedWasCorrectlyAnswered();
+                return answerIsCorrect();
             } else {
                 currentPlayer = getNextPlayer(currentPlayer);
                 return true;
             }
         } else {
-            return extractedWasCorrectlyAnswered();
+            return answerIsCorrect();
         }
     }
 
@@ -79,7 +79,7 @@ public class Game {
         }
     }
 
-    private boolean extractedWasCorrectlyAnswered() {
+    private boolean answerIsCorrect() {
         System.out.println("Answer was correct!!!!");
         currentPlayer.setCoins(currentPlayer.getCoins() + 1);
         System.out.println(currentPlayer.getName()
