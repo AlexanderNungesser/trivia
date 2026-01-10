@@ -23,14 +23,10 @@ public class Game {
 			popQuestions.add("Pop Question " + i);
 			scienceQuestions.add(("Science Question " + i));
 			sportsQuestions.add(("Sports Question " + i));
-			rockQuestions.add(createRockQuestion(i));
+			rockQuestions.add("Rock Question " + i);
     	}
     }
 
-	public String createRockQuestion(int index){
-		return "Rock Question " + index;
-	}
-	
 	public boolean isPlayable() {
 		return (howManyPlayers() >= 2);
 	}
