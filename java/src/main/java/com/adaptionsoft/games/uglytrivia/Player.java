@@ -50,4 +50,8 @@ public class Player {
     public void setGettingOutOfPenaltyBox(boolean gettingOutOfPenaltyBox) {
         this.isGettingOutOfPenaltyBox = gettingOutOfPenaltyBox;
     }
+
+    public boolean isWinner() {
+        return coins == 6;
+    }
 }

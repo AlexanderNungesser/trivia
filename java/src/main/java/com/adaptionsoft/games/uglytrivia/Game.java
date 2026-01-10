@@ -87,10 +87,9 @@ public class Game {
                 + currentPlayer.getCoins()
                 + " Gold Coins.");
 
-        boolean winner = didPlayerWin();
         currentPlayer = getNextPlayer(currentPlayer);
 
-        return winner;
+        return !currentPlayer.isWinner();
     }
 
     public boolean wrongAnswer() {
@@ -100,10 +99,5 @@ public class Game {
 
         currentPlayer = getNextPlayer(currentPlayer);
         return true;
-    }
-
-
-    private boolean didPlayerWin() {
-        return !(currentPlayer.getCoins() == 6);
     }
 }
