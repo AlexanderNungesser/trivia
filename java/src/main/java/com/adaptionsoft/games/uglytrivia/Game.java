@@ -21,8 +21,8 @@ public class Game {
     public  Game(){
     	for (int i = 0; i < 50; i++) {
 			popQuestions.add("Pop Question " + i);
-			scienceQuestions.add(("Science Question " + i));
-			sportsQuestions.add(("Sports Question " + i));
+			scienceQuestions.add("Science Question " + i);
+			sportsQuestions.add("Sports Question " + i);
 			rockQuestions.add("Rock Question " + i);
     	}
     }
