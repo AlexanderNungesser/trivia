@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Game {
+    public static final int PLAYING_FIELDS = 12;
     private final List<Player> players;
     private final QuestionFactory questionFactory;
     private Player currentPlayer;
@@ -47,8 +48,8 @@ public class Game {
 
     private void processRoll(int roll) {
         currentPlayer.setPlace(currentPlayer.getPlace() + roll);
-        if (currentPlayer.getPlace() > 11)
-            currentPlayer.setPlace(currentPlayer.getPlace() - 12);
+        if (currentPlayer.getPlace() >= PLAYING_FIELDS)
+            currentPlayer.setPlace(currentPlayer.getPlace() - PLAYING_FIELDS);
 
         System.out.println(currentPlayer.getName()
                 + "'s new location is "
