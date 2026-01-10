@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Game {
-    List<Player> players = new ArrayList<>();
-    QuestionFactory questionFactory;
-    Player currentPlayer;
-    boolean isGettingOutOfPenaltyBox;
+    private final List<Player> players;
+    private final QuestionFactory questionFactory;
+    private Player currentPlayer;
+    private boolean isGettingOutOfPenaltyBox;
 
     public Game() {
+        players = new ArrayList<>();
         questionFactory = new QuestionFactory();
     }
 
