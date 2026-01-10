@@ -17,10 +17,10 @@ public class Game {
         return (howManyPlayers() >= 2);
     }
 
-    public void addPlayer(String playerName) {
-        players.add(new Player(playerName));
+    public void addPlayer(String name) {
+        players.add(new Player(name));
 
-        System.out.println(playerName + " was added");
+        System.out.println(name + " was added");
         System.out.println("They are player number " + players.size());
     }
 
