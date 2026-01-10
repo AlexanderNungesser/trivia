@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Game {
-    public static final int PLAYING_FIELDS = 12;
+    private static final int PLAYING_FIELDS = 12;
+    private static final int COINS_PER_CORRECT_ANSWER = 1;
+    private static final int MIN_PLAYERS = 2;
     private final List<Player> players;
     private final QuestionFactory questionFactory;
     private Player currentPlayer;
@@ -15,7 +17,7 @@ public class Game {
     }
 
     public boolean isPlayable() {
-        return players.size() >= 2;
+        return players.size() >= MIN_PLAYERS;
     }
 
     public void addPlayer(String name) {
@@ -82,7 +84,7 @@ public class Game {
 
     private boolean answerIsCorrect() {
         System.out.println("Answer was correct!!!!");
-        currentPlayer.setCoins(currentPlayer.getCoins() + 1);
+        currentPlayer.setCoins(currentPlayer.getCoins() + COINS_PER_CORRECT_ANSWER);
         System.out.println(currentPlayer.getName()
                 + " now has "
                 + currentPlayer.getCoins()
