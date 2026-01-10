@@ -7,7 +7,6 @@ public class Game {
     private final List<Player> players;
     private final QuestionFactory questionFactory;
     private Player currentPlayer;
-    private boolean isGettingOutOfPenaltyBox;
 
     public Game() {
         players = new ArrayList<>();
@@ -32,13 +31,13 @@ public class Game {
 
         if (currentPlayer.isInPenaltyBox()) {
             if (roll % 2 != 0) {
-                isGettingOutOfPenaltyBox = true;
+                currentPlayer.setGettingOutOfPenaltyBox(true);
 
                 System.out.println(currentPlayer.getName() + " is getting out of the penalty box");
                 extractedRoll(roll);
             } else {
                 System.out.println(currentPlayer.getName() + " is not getting out of the penalty box");
-                isGettingOutOfPenaltyBox = false;
+                currentPlayer.setGettingOutOfPenaltyBox(false);
             }
 
         } else {
@@ -61,7 +60,7 @@ public class Game {
 
     public boolean wasCorrectlyAnswered() {
         if (currentPlayer.isInPenaltyBox()) {
-            if (isGettingOutOfPenaltyBox) {
+            if (currentPlayer.isGettingOutOfPenaltyBox()) {
                 return extractedWasCorrectlyAnswered();
             } else {
                 currentPlayer = getNextPlayer(currentPlayer);
