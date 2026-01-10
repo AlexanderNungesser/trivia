@@ -34,18 +34,18 @@ public class Game {
                 currentPlayer.setGettingOutOfPenaltyBox(true);
 
                 System.out.println(currentPlayer.getName() + " is getting out of the penalty box");
-                extractedRoll(roll);
+                processRoll(roll);
             } else {
                 System.out.println(currentPlayer.getName() + " is not getting out of the penalty box");
                 currentPlayer.setGettingOutOfPenaltyBox(false);
             }
 
         } else {
-            extractedRoll(roll);
+            processRoll(roll);
         }
     }
 
-    private void extractedRoll(int roll) {
+    private void processRoll(int roll) {
         currentPlayer.setPlace(currentPlayer.getPlace() + roll);
         if (currentPlayer.getPlace() > 11)
             currentPlayer.setPlace(currentPlayer.getPlace() - 12);
