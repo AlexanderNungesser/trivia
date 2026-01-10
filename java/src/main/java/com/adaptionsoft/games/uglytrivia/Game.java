@@ -20,10 +20,10 @@ public class Game {
     
     public  Game(){
     	for (int i = 0; i < 50; i++) {
-			popQuestions.add("Pop Question " + i);
-			scienceQuestions.add("Science Question " + i);
-			sportsQuestions.add("Sports Question " + i);
-			rockQuestions.add("Rock Question " + i);
+			popQuestions.addLast("Pop Question " + i);
+			scienceQuestions.addLast("Science Question " + i);
+			sportsQuestions.addLast("Sports Question " + i);
+			rockQuestions.addLast("Rock Question " + i);
     	}
     }
 
