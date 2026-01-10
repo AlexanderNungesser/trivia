@@ -64,7 +64,7 @@ public class Game {
                 return answerIsCorrect();
             } else {
                 currentPlayer = getNextPlayer(currentPlayer);
-                return true;
+                return false;
             }
         } else {
             return answerIsCorrect();
@@ -89,7 +89,7 @@ public class Game {
 
         currentPlayer = getNextPlayer(currentPlayer);
 
-        return !currentPlayer.isWinner();
+        return currentPlayer.isWinner();
     }
 
     public boolean wrongAnswer() {
@@ -98,6 +98,6 @@ public class Game {
         currentPlayer.setInPenaltyBox(true);
 
         currentPlayer = getNextPlayer(currentPlayer);
-        return true;
+        return false;
     }
 }
