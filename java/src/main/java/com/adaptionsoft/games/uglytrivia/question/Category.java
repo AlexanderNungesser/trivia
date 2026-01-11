@@ -15,9 +15,4 @@ public enum Category {
     public String value() {
         return value;
     }
-
-    // was currentCategory()
-    public static Category getCurrent(int place) {
-        return Category.values()[place % Category.values().length];
-    }
 }

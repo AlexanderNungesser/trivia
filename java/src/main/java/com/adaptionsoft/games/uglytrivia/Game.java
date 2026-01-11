@@ -1,78 +1,60 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import com.adaptionsoft.games.uglytrivia.answer.AnswerResult;
+import com.adaptionsoft.games.uglytrivia.answer.AnswerStrategy;
 import com.adaptionsoft.games.uglytrivia.dice.Dice;
 import com.adaptionsoft.games.uglytrivia.player.Player;
 import com.adaptionsoft.games.uglytrivia.question.Category;
+import com.adaptionsoft.games.uglytrivia.question.Question;
 import com.adaptionsoft.games.uglytrivia.question.QuestionFactory;
 
 import java.util.List;
 
 public class Game {
     public static final int WINNING_COINS = 6;
-    private static final int PLAYING_FIELDS = 12;
-    private static final int COINS_PER_CORRECT_ANSWER = 1;
+    public static final int PLAYING_FIELDS = 12;
+
     private static final int MIN_PLAYERS = 2;
+
     private final Dice dice;
     private final List<Player> players;
-    private final QuestionFactory questionFactory;
     private Player currentPlayer;
+    private final QuestionFactory questions;
+    private final AnswerStrategy answers;
 
-    public Game(Dice dice, List<Player> players, QuestionFactory questionFactory) {
+    public Game(Dice dice, List<Player> players, QuestionFactory questions, AnswerStrategy answers) {
+        if (players == null || players.size() < MIN_PLAYERS) {
+            throw new IllegalArgumentException("Game needs at least two players");
+        }
         this.dice = dice;
         this.players = players;
         this.currentPlayer = players.getFirst();
-        this.questionFactory = questionFactory;
-    }
-
-    public boolean isPlayable() {
-        return players.size() >= MIN_PLAYERS;
+        this.questions = questions;
+        this.answers = answers;
     }
 
     public void roll() {
         int roll = dice.roll();
+        currentPlayer = getNextPlayer(currentPlayer);
+
         System.out.println(currentPlayer.getName() + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        if (currentPlayer.isInPenaltyBox()) {
-            if (roll % 2 != 0) {
-                currentPlayer.setGettingOutOfPenaltyBox(true);
+        currentPlayer.move(roll);
 
-                System.out.println(currentPlayer.getName() + " is getting out of the penalty box");
-                roll(roll);
-            } else {
-                System.out.println(currentPlayer.getName() + " is not getting out of the penalty box");
-                currentPlayer.setGettingOutOfPenaltyBox(false);
-            }
-
-        } else {
-            roll(roll);
-        }
+        Question currentQuestion = getCurrentQuestion();
+        System.out.println(currentQuestion.text());
     }
 
-    private void roll(int roll) {
-        currentPlayer.setPlace(currentPlayer.getPlace() + roll);
-        if (currentPlayer.getPlace() >= PLAYING_FIELDS)
-            currentPlayer.setPlace(currentPlayer.getPlace() - PLAYING_FIELDS);
-
-        System.out.println(currentPlayer.getName()
-                + "'s new location is "
-                + currentPlayer.getPlace());
-        Category currentCategory = Category.getCurrent(currentPlayer.getPlace());
-        System.out.println("The category is " + currentCategory.value());
-        System.out.println(questionFactory.nextQuestion(currentCategory).text());
+    private Question getCurrentQuestion() {
+        Category category = getCurrentCategory();
+        System.out.println("The category is " + category.value());
+        return questions.nextQuestion(category);
     }
 
-    public boolean correctAnswer() {
-        if (currentPlayer.isInPenaltyBox()) {
-            if (currentPlayer.isGettingOutOfPenaltyBox()) {
-                return answerIsCorrect();
-            } else {
-                currentPlayer = getNextPlayer(currentPlayer);
-                return false;
-            }
-        } else {
-            return answerIsCorrect();
-        }
+    // was currentCategory()
+    private Category getCurrentCategory() {
+        return Category.values()[currentPlayer.getPlace() % Category.values().length];
     }
 
     private Player getNextPlayer(Player currentPlayer) {
@@ -83,25 +65,7 @@ public class Game {
         }
     }
 
-    private boolean answerIsCorrect() {
-        System.out.println("Answer was correct!!!!");
-        currentPlayer.setCoins(currentPlayer.getCoins() + COINS_PER_CORRECT_ANSWER);
-        System.out.println(currentPlayer.getName()
-                + " now has "
-                + currentPlayer.getCoins()
-                + " Gold Coins.");
-
-        currentPlayer = getNextPlayer(currentPlayer);
-
-        return currentPlayer.isWinner();
-    }
-
-    public boolean wrongAnswer() {
-        System.out.println("Question was incorrectly answered");
-        System.out.println(currentPlayer.getName() + " was sent to the penalty box");
-        currentPlayer.setInPenaltyBox(true);
-
-        currentPlayer = getNextPlayer(currentPlayer);
-        return false;
+    public AnswerResult answer() {
+        return answers.handleAnswer(currentPlayer, getCurrentQuestion());
     }
 }

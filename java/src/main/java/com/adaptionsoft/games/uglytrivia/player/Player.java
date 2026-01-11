@@ -25,16 +25,31 @@ public class Player {
         return place;
     }
 
-    public void setPlace(int place) {
-        this.place = place;
+    public void move(int roll){
+        if(this.inPenaltyBox){
+            if (roll % 2 != 0) {
+                this.isGettingOutOfPenaltyBox = true;
+
+                System.out.println(this.name + " is getting out of the penalty box");
+                if (this.place >= Game.PLAYING_FIELDS)
+                    this.place -= Game.PLAYING_FIELDS;
+
+                System.out.println(this.name
+                        + "'s new location is "
+                        + this.place);
+            } else {
+                System.out.println(this.name + " is not getting out of the penalty box");
+                this.isGettingOutOfPenaltyBox = false;
+            }
+        }
     }
 
     public int getCoins() {
         return coins;
     }
 
-    public void setCoins(int coins) {
-        this.coins = coins;
+    public void addCoins(int add){
+        this.coins += add;
     }
 
     public boolean isInPenaltyBox() {
