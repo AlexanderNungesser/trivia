@@ -7,7 +7,6 @@ public class Player {
     private int place = 0;
     private int coins = 0;
     private boolean inPenaltyBox = false;
-    private boolean isGettingOutOfPenaltyBox = false;
 
     public Player(String name) {
         this.name = name;
@@ -25,30 +24,27 @@ public class Player {
         return place;
     }
 
-    public void move(int roll){
-        if(this.inPenaltyBox){
-            if (roll % 2 != 0) {
-                this.isGettingOutOfPenaltyBox = true;
+    public void move(int roll) {
 
-                System.out.println(this.name + " is getting out of the penalty box");
-                if (this.place >= Game.PLAYING_FIELDS)
-                    this.place -= Game.PLAYING_FIELDS;
-
-                System.out.println(this.name
-                        + "'s new location is "
-                        + this.place);
-            } else {
-                System.out.println(this.name + " is not getting out of the penalty box");
-                this.isGettingOutOfPenaltyBox = false;
-            }
+        if (this.inPenaltyBox && roll % 2 == 0) {
+            System.out.println(name + " is not getting out of the penalty box");
+            return;
         }
+
+        if (this.inPenaltyBox) {
+            this.inPenaltyBox = false;
+            System.out.println(name + " is getting out of the penalty box");
+        }
+
+        this.place = (this.place + roll) % Game.PLAYING_FIELDS;
+        System.out.println(this.name + "'s new location is " + this.place);
     }
 
     public int getCoins() {
         return coins;
     }
 
-    public void addCoins(int add){
+    public void addCoins(int add) {
         this.coins += add;
     }
 
@@ -58,14 +54,6 @@ public class Player {
 
     public void setInPenaltyBox(boolean inPenaltyBox) {
         this.inPenaltyBox = inPenaltyBox;
-    }
-
-    public boolean isGettingOutOfPenaltyBox() {
-        return isGettingOutOfPenaltyBox;
-    }
-
-    public void setGettingOutOfPenaltyBox(boolean gettingOutOfPenaltyBox) {
-        this.isGettingOutOfPenaltyBox = gettingOutOfPenaltyBox;
     }
 
     public boolean isWinner() {

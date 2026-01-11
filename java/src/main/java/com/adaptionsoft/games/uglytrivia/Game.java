@@ -43,16 +43,16 @@ public class Game {
         currentPlayer.move(roll);
 
         Question currentQuestion = getCurrentQuestion();
+
+        System.out.println("The category is " + currentQuestion.category().value());
         System.out.println(currentQuestion.text());
     }
 
     private Question getCurrentQuestion() {
         Category category = getCurrentCategory();
-        System.out.println("The category is " + category.value());
         return questions.nextQuestion(category);
     }
 
-    // was currentCategory()
     private Category getCurrentCategory() {
         return Category.values()[currentPlayer.getPlace() % Category.values().length];
     }
