@@ -7,6 +7,8 @@ import com.adaptionsoft.games.uglytrivia.Game;
 import com.adaptionsoft.games.uglytrivia.dice.RandomDice;
 import com.adaptionsoft.games.uglytrivia.player.DefaultPlayerFactory;
 import com.adaptionsoft.games.uglytrivia.player.PlayerFactory;
+import com.adaptionsoft.games.uglytrivia.question.DefaultQuestionFactory;
+import com.adaptionsoft.games.uglytrivia.question.QuestionFactory;
 
 
 public class GameRunner {
@@ -14,7 +16,8 @@ public class GameRunner {
     public static void main(String[] args) {
 		Dice dice = new RandomDice(6);
 		PlayerFactory players = new DefaultPlayerFactory();
-		Game aGame = new Game(dice, players.createPlayers());
+		QuestionFactory questions = new DefaultQuestionFactory();
+		Game aGame = new Game(dice, players.createPlayers(), questions);
 
 		Random rand = new Random();
 

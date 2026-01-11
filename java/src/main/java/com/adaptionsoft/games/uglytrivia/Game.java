@@ -6,7 +6,6 @@ import com.adaptionsoft.games.uglytrivia.question.Category;
 import com.adaptionsoft.games.uglytrivia.question.QuestionFactory;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class Game {
     public static final int WINNING_COINS = 6;
@@ -18,11 +17,11 @@ public class Game {
     private final QuestionFactory questionFactory;
     private Player currentPlayer;
 
-    public Game(Dice dice, List<Player> players) {
+    public Game(Dice dice, List<Player> players, QuestionFactory questionFactory) {
         this.dice = dice;
         this.players = players;
         this.currentPlayer = players.getFirst();
-        questionFactory = new QuestionFactory();
+        this.questionFactory = questionFactory;
     }
 
     public boolean isPlayable() {
@@ -60,7 +59,7 @@ public class Game {
                 + currentPlayer.getPlace());
         Category currentCategory = Category.getCurrent(currentPlayer.getPlace());
         System.out.println("The category is " + currentCategory.value());
-        System.out.println(questionFactory.getQuestion(currentCategory).text());
+        System.out.println(questionFactory.nextQuestion(currentCategory).text());
     }
 
     public boolean correctAnswer() {
