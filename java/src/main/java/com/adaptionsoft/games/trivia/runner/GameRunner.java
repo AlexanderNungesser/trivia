@@ -2,13 +2,16 @@
 package com.adaptionsoft.games.trivia.runner;
 import java.util.Random;
 
+import com.adaptionsoft.games.uglytrivia.dice.Dice;
 import com.adaptionsoft.games.uglytrivia.Game;
+import com.adaptionsoft.games.uglytrivia.dice.RandomDice;
 
 
 public class GameRunner {
 
     public static void main(String[] args) {
-		Game aGame = new Game();
+		Dice dice = new RandomDice(6);
+		Game aGame = new Game(dice);
 		
 		aGame.addPlayer("Chet");
 		aGame.addPlayer("Pat");
@@ -18,18 +21,13 @@ public class GameRunner {
 
         boolean hasWinner;
         do {
-			
-			aGame.roll(rand.nextInt(5) + 1);
+			aGame.roll();
 			
 			if (rand.nextInt(9) == 7) {
 				hasWinner = aGame.wrongAnswer();
 			} else {
 				hasWinner = aGame.correctAnswer();
 			}
-			
-			
-			
 		} while (!hasWinner);
-		
 	}
 }

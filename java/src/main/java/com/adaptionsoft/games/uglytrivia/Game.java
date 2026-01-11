@@ -1,5 +1,9 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import com.adaptionsoft.games.uglytrivia.dice.Dice;
+import com.adaptionsoft.games.uglytrivia.question.Category;
+import com.adaptionsoft.games.uglytrivia.question.QuestionFactory;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -8,11 +12,13 @@ public class Game {
     private static final int PLAYING_FIELDS = 12;
     private static final int COINS_PER_CORRECT_ANSWER = 1;
     private static final int MIN_PLAYERS = 2;
+    private final Dice dice;
     private final List<Player> players;
     private final QuestionFactory questionFactory;
     private Player currentPlayer;
 
-    public Game() {
+    public Game(Dice dice) {
+        this.dice = dice;
         players = new ArrayList<>();
         questionFactory = new QuestionFactory();
     }
@@ -29,7 +35,8 @@ public class Game {
         System.out.println("They are player number " + players.size());
     }
 
-    public void roll(int roll) {
+    public void roll() {
+        int roll = dice.roll();
         System.out.println(currentPlayer.getName() + " is the current player");
         System.out.println("They have rolled a " + roll);
 
@@ -38,18 +45,18 @@ public class Game {
                 currentPlayer.setGettingOutOfPenaltyBox(true);
 
                 System.out.println(currentPlayer.getName() + " is getting out of the penalty box");
-                processRoll(roll);
+                roll(roll);
             } else {
                 System.out.println(currentPlayer.getName() + " is not getting out of the penalty box");
                 currentPlayer.setGettingOutOfPenaltyBox(false);
             }
 
         } else {
-            processRoll(roll);
+            roll(roll);
         }
     }
 
-    private void processRoll(int roll) {
+    private void roll(int roll) {
         currentPlayer.setPlace(currentPlayer.getPlace() + roll);
         if (currentPlayer.getPlace() >= PLAYING_FIELDS)
             currentPlayer.setPlace(currentPlayer.getPlace() - PLAYING_FIELDS);
