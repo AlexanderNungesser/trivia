@@ -1,4 +1,6 @@
-package com.adaptionsoft.games.uglytrivia;
+package com.adaptionsoft.games.uglytrivia.player;
+
+import com.adaptionsoft.games.uglytrivia.Game;
 
 public class Player {
     private String name;

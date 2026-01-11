@@ -1,6 +1,7 @@
 package com.adaptionsoft.games.uglytrivia;
 
 import com.adaptionsoft.games.uglytrivia.dice.Dice;
+import com.adaptionsoft.games.uglytrivia.player.Player;
 import com.adaptionsoft.games.uglytrivia.question.Category;
 import com.adaptionsoft.games.uglytrivia.question.QuestionFactory;
 
@@ -17,22 +18,15 @@ public class Game {
     private final QuestionFactory questionFactory;
     private Player currentPlayer;
 
-    public Game(Dice dice) {
+    public Game(Dice dice, List<Player> players) {
         this.dice = dice;
-        players = new ArrayList<>();
+        this.players = players;
+        this.currentPlayer = players.getFirst();
         questionFactory = new QuestionFactory();
     }
 
     public boolean isPlayable() {
         return players.size() >= MIN_PLAYERS;
-    }
-
-    public void addPlayer(String name) {
-        Player player = new Player(name);
-        players.add(player);
-        if (players.size() == 1) currentPlayer = players.getFirst();
-        System.out.println(name + " was added");
-        System.out.println("They are player number " + players.size());
     }
 
     public void roll() {
