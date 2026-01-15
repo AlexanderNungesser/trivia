@@ -1,12 +1,14 @@
 package com.adaptionsoft.games.uglytrivia.player;
 
 import com.adaptionsoft.games.uglytrivia.Game;
+import com.adaptionsoft.games.uglytrivia.player.state.DefaultNormalState;
+import com.adaptionsoft.games.uglytrivia.player.state.PlayerState;
 
 public class Player {
     private String name;
     private int place = 0;
     private int coins = 0;
-    private boolean inPenaltyBox = false;
+    private PlayerState state = new DefaultNormalState();
 
     public Player(String name) {
         this.name = name;
@@ -24,20 +26,19 @@ public class Player {
         return place;
     }
 
-    public void move(int roll) {
+    public MoveResult move(int roll) {
 
-        if (this.inPenaltyBox && roll % 2 == 0) {
+        if (!state.canMove(roll)) {
             System.out.println(name + " is not getting out of the penalty box");
-            return;
+            return MoveResult.BLOCKED;
         }
 
-        if (this.inPenaltyBox) {
-            this.inPenaltyBox = false;
-            System.out.println(name + " is getting out of the penalty box");
-        }
+        this.state.onMove(this);
 
         this.place = (this.place + roll) % Game.PLAYING_FIELDS;
         System.out.println(this.name + "'s new location is " + this.place);
+
+        return MoveResult.MOVED;
     }
 
     public int getCoins() {
@@ -48,15 +49,11 @@ public class Player {
         this.coins += add;
     }
 
-    public boolean isInPenaltyBox() {
-        return inPenaltyBox;
-    }
-
-    public void setInPenaltyBox(boolean inPenaltyBox) {
-        this.inPenaltyBox = inPenaltyBox;
-    }
-
     public boolean isWinner() {
         return coins == Game.WINNING_COINS;
+    }
+
+    public void setState(PlayerState state) {
+        this.state = state;
     }
 }

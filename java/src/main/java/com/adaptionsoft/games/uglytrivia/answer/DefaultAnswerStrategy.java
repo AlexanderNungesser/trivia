@@ -1,6 +1,7 @@
 package com.adaptionsoft.games.uglytrivia.answer;
 
 import com.adaptionsoft.games.uglytrivia.player.Player;
+import com.adaptionsoft.games.uglytrivia.player.state.DefaultPenaltyBoxState;
 import com.adaptionsoft.games.uglytrivia.question.Question;
 
 import java.util.Random;
@@ -16,7 +17,7 @@ public class DefaultAnswerStrategy implements AnswerStrategy {
             player.addCoins(COINS_PER_CORRECT_ANSWER);
             return new AnswerResult(!player.isWinner(), "Answer was correct!!!!\n" + player.getName() + " now has " + player.getCoins() + " Gold Coins.");
         } else {
-            player.setInPenaltyBox(true);
+            player.setState(new DefaultPenaltyBoxState());
             return new AnswerResult(true, "Question was incorrectly answered\n" + player.getName() + " was sent to the penalty box");
         }
 

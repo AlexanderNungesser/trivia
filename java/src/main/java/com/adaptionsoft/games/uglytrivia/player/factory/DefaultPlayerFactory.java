@@ -1,4 +1,6 @@
-package com.adaptionsoft.games.uglytrivia.player;
+package com.adaptionsoft.games.uglytrivia.player.factory;
+
+import com.adaptionsoft.games.uglytrivia.player.Player;
 
 import java.util.List;
 

@@ -7,8 +7,8 @@ import com.adaptionsoft.games.uglytrivia.answer.DefaultAnswerStrategy;
 import com.adaptionsoft.games.uglytrivia.dice.Dice;
 import com.adaptionsoft.games.uglytrivia.Game;
 import com.adaptionsoft.games.uglytrivia.dice.RandomDice;
-import com.adaptionsoft.games.uglytrivia.player.DefaultPlayerFactory;
-import com.adaptionsoft.games.uglytrivia.player.PlayerFactory;
+import com.adaptionsoft.games.uglytrivia.player.factory.DefaultPlayerFactory;
+import com.adaptionsoft.games.uglytrivia.player.factory.PlayerFactory;
 import com.adaptionsoft.games.uglytrivia.question.DefaultQuestionFactory;
 import com.adaptionsoft.games.uglytrivia.question.QuestionFactory;
 

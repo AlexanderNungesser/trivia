@@ -3,6 +3,7 @@ package com.adaptionsoft.games.uglytrivia;
 import com.adaptionsoft.games.uglytrivia.answer.AnswerResult;
 import com.adaptionsoft.games.uglytrivia.answer.AnswerStrategy;
 import com.adaptionsoft.games.uglytrivia.dice.Dice;
+import com.adaptionsoft.games.uglytrivia.player.MoveResult;
 import com.adaptionsoft.games.uglytrivia.player.Player;
 import com.adaptionsoft.games.uglytrivia.question.Category;
 import com.adaptionsoft.games.uglytrivia.question.Question;
@@ -40,7 +41,11 @@ public class Game {
         System.out.println(currentPlayer.getName() + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        currentPlayer.move(roll);
+        MoveResult result = currentPlayer.move(roll);
+
+        if (result == MoveResult.BLOCKED){
+            return;
+        }
 
         Question currentQuestion = getCurrentQuestion();
 
