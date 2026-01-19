@@ -24,12 +24,7 @@ public class GameRunner {
 
         boolean hasWinner;
         do {
-			game.roll();
-
-			AnswerResult result = game.answer();
-
-			System.out.println(result.message());
-			hasWinner = !result.gameContinues();
+			hasWinner = !game.roll();
 		} while (!hasWinner);
 	}
 }

@@ -35,23 +35,28 @@ public class Game {
         this.answers = answers;
     }
 
-    public void roll() {
+    public boolean roll() {
         int roll = dice.roll();
         currentPlayer = getNextPlayer(currentPlayer);
 
         System.out.println(currentPlayer.getName() + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        PlayerState result = currentPlayer.move(roll);
+        PlayerState state = currentPlayer.move(roll);
 
-        if (result instanceof DefaultPenaltyBoxState){
-            return;
+        if (state instanceof DefaultPenaltyBoxState){
+            return true;
         }
 
         Question currentQuestion = getCurrentQuestion();
 
         System.out.println("The category is " + currentQuestion.category().value());
         System.out.println(currentQuestion.text());
+
+        AnswerResult result = answer();
+
+        System.out.println(result.message());
+        return result.gameContinues();
     }
 
     private Question getCurrentQuestion() {
