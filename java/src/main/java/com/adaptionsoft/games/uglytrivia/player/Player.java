@@ -1,12 +1,15 @@
 package com.adaptionsoft.games.uglytrivia.player;
 
 import com.adaptionsoft.games.uglytrivia.Game;
+import com.adaptionsoft.games.uglytrivia.event.events.PlayerMoved;
+import com.adaptionsoft.games.uglytrivia.event.events.PlayerStaysInPenaltyBox;
+import com.adaptionsoft.games.uglytrivia.event.GameEventPublisher;
 import com.adaptionsoft.games.uglytrivia.player.state.DefaultNormalState;
 import com.adaptionsoft.games.uglytrivia.player.state.PlayerState;
 
 public class Player {
     private String name;
-    private int place = 0;
+    private int position = 0;
     private int coins = 0;
     private PlayerState state = new DefaultNormalState();
 
@@ -22,22 +25,22 @@ public class Player {
         this.name = name;
     }
 
-    public int getPlace() {
-        return place;
+    public int getPosition() {
+        return position;
     }
 
-    public PlayerState move(int roll) {
+    public PlayerState move(int roll, GameEventPublisher eventPublisher) {
 
         if (!state.canMove(roll)) {
-            System.out.println(name + " is not getting out of the penalty box");
+            eventPublisher.publish(new PlayerStaysInPenaltyBox(this.name));
             return this.state;
         }
 
-        this.state.onMove(this);
+        this.state.onMove(this, eventPublisher);
 
-        this.place = (this.place + roll) % Game.PLAYING_FIELDS;
-        System.out.println(this.name + "'s new location is " + this.place);
+        this.position = (this.position + roll) % Game.PLAYING_FIELDS;
 
+        eventPublisher.publish(new PlayerMoved(this.name, this.position));
         return this.state;
     }
 

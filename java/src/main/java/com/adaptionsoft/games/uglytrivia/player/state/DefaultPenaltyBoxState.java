@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.uglytrivia.player.state;
 
+import com.adaptionsoft.games.uglytrivia.event.GameEventPublisher;
+import com.adaptionsoft.games.uglytrivia.event.events.PlayerLeftPenaltyBox;
 import com.adaptionsoft.games.uglytrivia.player.Player;
 
 public class DefaultPenaltyBoxState implements PlayerState {
@@ -7,9 +9,9 @@ public class DefaultPenaltyBoxState implements PlayerState {
         return roll % 2 != 0;
     }
 
-    public void onMove(Player player) {
+    public void onMove(Player player, GameEventPublisher eventPublisher) {
         player.setState(new DefaultNormalState());
-        System.out.println(player.getName() + " is getting out of the penalty box");
+        eventPublisher.publish(new PlayerLeftPenaltyBox(player.getName()));
     }
 }
 

@@ -1,0 +1,7 @@
+package com.adaptionsoft.games.uglytrivia.event.events;
+
+public sealed interface GameEvent
+        permits PlayerJoined, PlayerChanged, PlayerRolled, PlayerMoved, PlayerLeftPenaltyBox, PlayerStaysInPenaltyBox, QuestionAsked, AnswerCorrect, AnswerWrong, PlayerWon {
+}
+
+

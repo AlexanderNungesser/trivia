@@ -11,14 +11,14 @@ public class DefaultAnswerStrategy implements AnswerStrategy {
     private static final int COINS_PER_CORRECT_ANSWER = 1;
 
     @Override
-    public AnswerResult handleAnswer(Player player, Question question) {
+    public boolean handleAnswer(Player player, Question question) {
 
         if (random.nextInt(9) != 7) {
             player.addCoins(COINS_PER_CORRECT_ANSWER);
-            return new AnswerResult(!player.isWinner(), "Answer was correct!!!!\n" + player.getName() + " now has " + player.getCoins() + " Gold Coins.");
+            return true;
         } else {
             player.setState(new DefaultPenaltyBoxState());
-            return new AnswerResult(true, "Question was incorrectly answered\n" + player.getName() + " was sent to the penalty box");
+            return false;
         }
 
     }

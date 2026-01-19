@@ -1,8 +1,9 @@
 package com.adaptionsoft.games.uglytrivia;
 
-import com.adaptionsoft.games.uglytrivia.answer.AnswerResult;
 import com.adaptionsoft.games.uglytrivia.answer.AnswerStrategy;
 import com.adaptionsoft.games.uglytrivia.dice.DiceStrategy;
+import com.adaptionsoft.games.uglytrivia.event.*;
+import com.adaptionsoft.games.uglytrivia.event.events.*;
 import com.adaptionsoft.games.uglytrivia.player.Player;
 import com.adaptionsoft.games.uglytrivia.player.state.DefaultPenaltyBoxState;
 import com.adaptionsoft.games.uglytrivia.player.state.PlayerState;
@@ -20,43 +21,56 @@ public class Game {
 
     private final DiceStrategy dice;
     private final List<Player> players;
-    private Player currentPlayer;
+    private Player currentPlayer = null;
     private final QuestionFactory questions;
     private final AnswerStrategy answers;
+    private final GameEventPublisher eventPublisher;
 
-    public Game(DiceStrategy dice, List<Player> players, QuestionFactory questions, AnswerStrategy answers) {
+    public Game(DiceStrategy dice, List<Player> players, QuestionFactory questions, AnswerStrategy answers, GameEventPublisher eventPublisher) {
         if (players == null || players.size() < MIN_PLAYERS) {
             throw new IllegalArgumentException("Game needs at least two players");
         }
         this.dice = dice;
         this.players = players;
-        this.currentPlayer = players.getFirst();
+        for (Player player : this.players) {
+            eventPublisher.publish(new PlayerJoined(player.getName(), players.indexOf(player) + 1));
+        }
         this.questions = questions;
         this.answers = answers;
+        this.eventPublisher = eventPublisher;
     }
 
     public boolean roll() {
         int roll = dice.roll();
         currentPlayer = getNextPlayer(currentPlayer);
 
-        System.out.println(currentPlayer.getName() + " is the current player");
-        System.out.println("They have rolled a " + roll);
+        eventPublisher.publish(new PlayerChanged(currentPlayer.getName()));
+        eventPublisher.publish(new PlayerRolled(roll));
 
-        PlayerState state = currentPlayer.move(roll);
+        PlayerState state = currentPlayer.move(roll, eventPublisher);
 
-        if (state instanceof DefaultPenaltyBoxState){
+        if (state instanceof DefaultPenaltyBoxState) {
             return true;
         }
 
         Question currentQuestion = getCurrentQuestion();
 
-        System.out.println("The category is " + currentQuestion.category().value());
-        System.out.println(currentQuestion.text());
+        eventPublisher.publish(new QuestionAsked(currentQuestion.category().value(), currentQuestion.text()));
 
-        AnswerResult result = answer();
+        boolean answerResult = answer();
 
-        System.out.println(result.message());
-        return result.gameContinues();
+        if (answerResult) {
+            eventPublisher.publish(new AnswerCorrect(currentPlayer.getName(), currentPlayer.getCoins()));
+        }else {
+            eventPublisher.publish(new AnswerWrong(currentPlayer.getName()));
+        }
+
+        boolean winner = currentPlayer.isWinner();
+        if (winner) {
+            eventPublisher.publish(new PlayerWon(currentPlayer.getName()));
+        }
+
+        return !winner;
     }
 
     private Question getCurrentQuestion() {
@@ -65,18 +79,18 @@ public class Game {
     }
 
     private Category getCurrentCategory() {
-        return Category.values()[currentPlayer.getPlace() % Category.values().length];
+        return Category.values()[currentPlayer.getPosition() % Category.values().length];
     }
 
     private Player getNextPlayer(Player currentPlayer) {
-        if (players.indexOf(currentPlayer) == players.size() - 1) {
+        if (currentPlayer == null || players.indexOf(currentPlayer) == players.size() - 1) {
             return players.getFirst();
         } else {
             return players.get(players.indexOf(currentPlayer) + 1);
         }
     }
 
-    public AnswerResult answer() {
+    public boolean answer() {
         return answers.handleAnswer(currentPlayer, getCurrentQuestion());
     }
 }
