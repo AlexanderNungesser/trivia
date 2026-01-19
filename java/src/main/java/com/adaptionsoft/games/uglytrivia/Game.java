@@ -3,8 +3,9 @@ package com.adaptionsoft.games.uglytrivia;
 import com.adaptionsoft.games.uglytrivia.answer.AnswerResult;
 import com.adaptionsoft.games.uglytrivia.answer.AnswerStrategy;
 import com.adaptionsoft.games.uglytrivia.dice.Dice;
-import com.adaptionsoft.games.uglytrivia.player.MoveResult;
 import com.adaptionsoft.games.uglytrivia.player.Player;
+import com.adaptionsoft.games.uglytrivia.player.state.DefaultPenaltyBoxState;
+import com.adaptionsoft.games.uglytrivia.player.state.PlayerState;
 import com.adaptionsoft.games.uglytrivia.question.Category;
 import com.adaptionsoft.games.uglytrivia.question.Question;
 import com.adaptionsoft.games.uglytrivia.question.QuestionFactory;
@@ -41,9 +42,9 @@ public class Game {
         System.out.println(currentPlayer.getName() + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        MoveResult result = currentPlayer.move(roll);
+        PlayerState result = currentPlayer.move(roll);
 
-        if (result == MoveResult.BLOCKED){
+        if (result instanceof DefaultPenaltyBoxState){
             return;
         }
 

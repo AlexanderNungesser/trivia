@@ -26,11 +26,11 @@ public class Player {
         return place;
     }
 
-    public MoveResult move(int roll) {
+    public PlayerState move(int roll) {
 
         if (!state.canMove(roll)) {
             System.out.println(name + " is not getting out of the penalty box");
-            return MoveResult.BLOCKED;
+            return this.state;
         }
 
         this.state.onMove(this);
@@ -38,7 +38,7 @@ public class Player {
         this.place = (this.place + roll) % Game.PLAYING_FIELDS;
         System.out.println(this.name + "'s new location is " + this.place);
 
-        return MoveResult.MOVED;
+        return this.state;
     }
 
     public int getCoins() {
