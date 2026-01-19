@@ -2,7 +2,7 @@ package com.adaptionsoft.games.uglytrivia;
 
 import com.adaptionsoft.games.uglytrivia.answer.AnswerResult;
 import com.adaptionsoft.games.uglytrivia.answer.AnswerStrategy;
-import com.adaptionsoft.games.uglytrivia.dice.Dice;
+import com.adaptionsoft.games.uglytrivia.dice.DiceStrategy;
 import com.adaptionsoft.games.uglytrivia.player.Player;
 import com.adaptionsoft.games.uglytrivia.player.state.DefaultPenaltyBoxState;
 import com.adaptionsoft.games.uglytrivia.player.state.PlayerState;
@@ -18,13 +18,13 @@ public class Game {
 
     private static final int MIN_PLAYERS = 2;
 
-    private final Dice dice;
+    private final DiceStrategy dice;
     private final List<Player> players;
     private Player currentPlayer;
     private final QuestionFactory questions;
     private final AnswerStrategy answers;
 
-    public Game(Dice dice, List<Player> players, QuestionFactory questions, AnswerStrategy answers) {
+    public Game(DiceStrategy dice, List<Player> players, QuestionFactory questions, AnswerStrategy answers) {
         if (players == null || players.size() < MIN_PLAYERS) {
             throw new IllegalArgumentException("Game needs at least two players");
         }

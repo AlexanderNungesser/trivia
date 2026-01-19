@@ -1,9 +1,9 @@
 package com.adaptionsoft.games.uglytrivia.dice;
 
-public class FixedDice implements Dice {
+public class FixedDiceStrategy implements DiceStrategy {
     private final int value;
 
-    public FixedDice(int value) {
+    public FixedDiceStrategy(int value) {
         this.value = value;
     }
 

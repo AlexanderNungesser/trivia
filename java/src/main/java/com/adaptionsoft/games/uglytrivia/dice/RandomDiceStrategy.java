@@ -2,11 +2,11 @@ package com.adaptionsoft.games.uglytrivia.dice;
 
 import java.util.Random;
 
-public class RandomDice implements Dice {
+public class RandomDiceStrategy implements DiceStrategy {
     private final int sides;
     private final Random random = new Random();
 
-    public RandomDice(int sides) {
+    public RandomDiceStrategy(int sides) {
         this.sides = sides;
     }
 

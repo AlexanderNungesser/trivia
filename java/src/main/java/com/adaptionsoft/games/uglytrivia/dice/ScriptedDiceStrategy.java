@@ -4,10 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class ScriptedDice implements Dice {
+public class ScriptedDiceStrategy implements DiceStrategy {
     private final Queue<Integer> rolls;
 
-    public ScriptedDice(List<Integer> rolls) {
+    public ScriptedDiceStrategy(List<Integer> rolls) {
         this.rolls = new LinkedList<>(rolls);
     }
 
