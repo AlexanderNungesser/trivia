@@ -27,70 +27,78 @@ public class Game {
     private final GameEventPublisher eventPublisher;
 
     public Game(DiceStrategy dice, List<Player> players, QuestionFactory questions, AnswerStrategy answers, GameEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
         if (players == null || players.size() < MIN_PLAYERS) {
             throw new IllegalArgumentException("Game needs at least two players");
         }
         this.dice = dice;
         this.players = players;
         for (Player player : this.players) {
-            eventPublisher.publish(new PlayerJoined(player.getName(), players.indexOf(player) + 1));
+            this.eventPublisher.publish(new PlayerJoined(player.getName(), players.indexOf(player) + 1));
         }
         this.questions = questions;
         this.answers = answers;
-        this.eventPublisher = eventPublisher;
     }
 
-    public boolean roll() {
-        int roll = dice.roll();
-        currentPlayer = getNextPlayer(currentPlayer);
+    public void roll() {
+        this.currentPlayer = getNextPlayer(this.currentPlayer);
 
-        eventPublisher.publish(new PlayerChanged(currentPlayer.getName()));
-        eventPublisher.publish(new PlayerRolled(roll));
+        this.eventPublisher.publish(new PlayerChanged(this.currentPlayer.getName()));
 
-        PlayerState state = currentPlayer.move(roll, eventPublisher);
+        int roll = this.dice.roll();
+
+        this.eventPublisher.publish(new PlayerRolled(roll));
+
+        PlayerState state = this.currentPlayer.move(roll, this.eventPublisher);
 
         if (state instanceof DefaultPenaltyBoxState) {
-            return true;
+            return;
         }
 
         Question currentQuestion = getCurrentQuestion();
 
-        eventPublisher.publish(new QuestionAsked(currentQuestion.category().value(), currentQuestion.text()));
+        this.eventPublisher.publish(new QuestionAsked(currentQuestion.category().value(), currentQuestion.text()));
 
         boolean answerResult = answer();
 
         if (answerResult) {
-            eventPublisher.publish(new AnswerCorrect(currentPlayer.getName(), currentPlayer.getCoins()));
+            this.eventPublisher.publish(new AnswerCorrect(this.currentPlayer.getName()));
+            this.eventPublisher.publish(new PlayerGotCoins(this.currentPlayer.getName(), this.currentPlayer.getCoins()));
         }else {
-            eventPublisher.publish(new AnswerWrong(currentPlayer.getName()));
+            this.eventPublisher.publish(new AnswerWrong(this.currentPlayer.getName()));
+            this.eventPublisher.publish(new PlayerGoesToPenaltyBox(this.currentPlayer.getName()));
         }
+    }
 
-        boolean winner = currentPlayer.isWinner();
+    public boolean hasWinner() {
+        if (this.currentPlayer == null) {
+            return false;
+        }
+        boolean winner = this.currentPlayer.isWinner();
         if (winner) {
-            eventPublisher.publish(new PlayerWon(currentPlayer.getName()));
+            this.eventPublisher.publish(new PlayerWon(this.currentPlayer.getName()));
         }
-
-        return !winner;
+        return winner;
     }
 
     private Question getCurrentQuestion() {
         Category category = getCurrentCategory();
-        return questions.nextQuestion(category);
+        return this.questions.nextQuestion(category);
     }
 
     private Category getCurrentCategory() {
-        return Category.values()[currentPlayer.getPosition() % Category.values().length];
+        return Category.values()[this.currentPlayer.getPosition() % Category.values().length];
     }
 
     private Player getNextPlayer(Player currentPlayer) {
-        if (currentPlayer == null || players.indexOf(currentPlayer) == players.size() - 1) {
-            return players.getFirst();
+        if (currentPlayer == null || this.players.indexOf(currentPlayer) == this.players.size() - 1) {
+            return this.players.getFirst();
         } else {
-            return players.get(players.indexOf(currentPlayer) + 1);
+            return this.players.get(this.players.indexOf(currentPlayer) + 1);
         }
     }
 
-    public boolean answer() {
-        return answers.handleAnswer(currentPlayer, getCurrentQuestion());
+    private boolean answer() {
+        return this.answers.handleAnswer(this.currentPlayer, getCurrentQuestion());
     }
 }

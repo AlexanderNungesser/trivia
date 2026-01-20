@@ -2,14 +2,21 @@ package com.adaptionsoft.games.uglytrivia.event;
 
 import com.adaptionsoft.games.uglytrivia.event.events.GameEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventBus implements GameEventPublisher {
 
-    private final List<GameEventSubscriber> subscribers;
+    private final List<GameEventSubscriber> subscribers = new ArrayList<>();
 
-    public EventBus(List<GameEventSubscriber> subscribers) {
-        this.subscribers = subscribers;
+    @Override
+    public void addSubscriber(GameEventSubscriber subscriber) {
+        this.subscribers.add(subscriber);
+    }
+
+    @Override
+    public void removeSubscriber(GameEventSubscriber subscriber) {
+        this.subscribers.remove(subscriber);
     }
 
     @Override

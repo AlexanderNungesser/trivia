@@ -5,6 +5,7 @@ import com.adaptionsoft.games.uglytrivia.event.events.PlayerMoved;
 import com.adaptionsoft.games.uglytrivia.event.events.PlayerStaysInPenaltyBox;
 import com.adaptionsoft.games.uglytrivia.event.GameEventPublisher;
 import com.adaptionsoft.games.uglytrivia.player.state.DefaultNormalState;
+import com.adaptionsoft.games.uglytrivia.player.state.DefaultPenaltyBoxState;
 import com.adaptionsoft.games.uglytrivia.player.state.PlayerState;
 
 public class Player {
@@ -21,16 +22,11 @@ public class Player {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getPosition() {
         return position;
     }
 
     public PlayerState move(int roll, GameEventPublisher eventPublisher) {
-
         if (!state.canMove(roll)) {
             eventPublisher.publish(new PlayerStaysInPenaltyBox(this.name));
             return this.state;
@@ -53,7 +49,7 @@ public class Player {
     }
 
     public boolean isWinner() {
-        return coins == Game.WINNING_COINS;
+        return (this.coins == Game.WINNING_COINS) && !(this.state instanceof DefaultPenaltyBoxState);
     }
 
     public void setState(PlayerState state) {

@@ -20,18 +20,19 @@ import java.util.List;
 public class GameRunner {
 
     public static void main(String[] args) {
-		DiceStrategy dice = new RandomDiceStrategy(6);
-		PlayerFactory players = new DefaultPlayerFactory();
-		QuestionFactory questions = new DefaultQuestionFactory();
-		AnswerStrategy answers = new DefaultAnswerStrategy();
-		GameEventSubscriber console = new ConsoleGameObserver();
-		GameEventPublisher eventBus = new EventBus(List.of(console));
+        DiceStrategy dice = new RandomDiceStrategy(6);
+        PlayerFactory players = new DefaultPlayerFactory();
+        QuestionFactory questions = new DefaultQuestionFactory();
+        AnswerStrategy answers = new DefaultAnswerStrategy();
+        GameEventSubscriber console = new ConsoleGameObserver();
+        GameEventPublisher eventBus = new EventBus();
+        eventBus.addSubscriber(console);
 
-		Game game = new Game(dice, players.createPlayers(), questions, answers, eventBus);
+        Game game = new Game(dice, players.createPlayers(), questions, answers, eventBus);
 
-        boolean hasWinner;
         do {
-			hasWinner = !game.roll();
-		} while (!hasWinner);
-	}
+            game.roll();
+        }
+        while (!game.hasWinner());
+    }
 }
