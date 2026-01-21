@@ -6,7 +6,7 @@ import com.adaptionsoft.games.uglytrivia.question.Question;
 
 import java.util.Random;
 
-public class DefaultAnswerStrategy implements AnswerStrategy {
+public class RandomAnswerStrategy implements AnswerStrategy {
     private final Random random = new Random();
     private static final int COINS_PER_CORRECT_ANSWER = 1;
 
