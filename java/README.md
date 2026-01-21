@@ -25,12 +25,14 @@
 ## Golden-Copy
 
 Für eine _Golden-Copy_ würde ich zum einen die schon existierende **Konsolen-Ausgabe** nehmen und zum anderen die **Characterization-Tests**, die man anlegt, um das Refactoring abzusichern.
+Die Characterization-Tests würden sich hauptsächlich auf die Variablen in der Game-Klasse beziehen, welche man beim Herausziehen von eigenen Klassen anpassen muss, dass diese die neuen Klassen statt der alten, nicht mehr vorhandenen Variablen nutzen. 
 Damit die Konsolen-Ausgabe aber auch immer die gleiche ist, muss man den vom Zufall behafteten Würfel und die zufälligen Antworten durch feste Reihenfolgen oder Werte ersetzen.
 Um das zu erreichen, eignet sich das Strategy-Pattern für die Art des im Spiel verwendeten Würfels und die Antworten der Spieler.
 Außerdem sollten immer die gleichen Spieler und immer die gleichen Fragen vorkommen, um den gleichen Spielverlauf reproduzieren zu können, hierfür eignet sich das Factory-Pattern.
 Hinzu kommt, dass ein Spieler in eine _"Penalty-Box"_ kommen kann, was wiederum einen Zustand des Spielers beschreibt.
 Aufgrund dessen ist zusätzlich das State-Pattern auf den Spieler anwendbar.
 Um die Konsolen-Ausgaben von der Spiel-Logik zu trennen, ist das Observer-Pattern von Nutzen.
+Kleinere eindeutige Fehler, sowas wie die Verwendung eines D5 oder die Diskrepanz zwischen den Ausgaben, dass die gegebene Antwort korrekt sei, je nachdem ob man aus der Penalty-Box kommt oder nicht, habe ich vom Refactoring ausgenommen und korrigiert. 
 
 ## Dice
 
