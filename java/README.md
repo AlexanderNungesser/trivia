@@ -25,7 +25,10 @@
 ## Golden-Copy
 
 Für eine _Golden-Copy_ würde ich zum einen die schon existierende **Konsolen-Ausgabe** nehmen und zum anderen die **Characterization-Tests**, die man anlegt, um das Refactoring abzusichern.
-Die Characterization-Tests würden sich hauptsächlich auf die Variablen in der Game-Klasse beziehen, welche man beim Herausziehen von eigenen Klassen anpassen muss, dass diese die neuen Klassen statt der alten, nicht mehr vorhandenen Variablen nutzen. 
+Die Characterization-Tests würden sich hauptsächlich auf die Variablen in der Game-Klasse beziehen, welche man beim Herausziehen von eigenen Klassen anpassen muss, dass diese die neuen Klassen statt der alten, nicht mehr vorhandenen Variablen nutzen.
+Bei den Variablen handelt es sich um diejenigen, die die Spieler, ihre Positionen, Münzen, die Fragen usw. speichern und tracken.
+Die Tests würden dann prüfen, ob die Namen der _players_ stimmen, die _places_ richtig erhöht oder initial gesetzt werden usw.
+Außerdem würden die vorhandenen Methoden getestet werden, dass z.B. je nach der Position des Spielers, auch die richtige Fragen-Kategorie ausgewählt wird oder das Verhalten bei einer richtigen oder falschen Antwort oä.
 Damit die Konsolen-Ausgabe aber auch immer die gleiche ist, muss man den vom Zufall behafteten Würfel und die zufälligen Antworten durch feste Reihenfolgen oder Werte ersetzen.
 Um das zu erreichen, eignet sich das Strategy-Pattern für die Art des im Spiel verwendeten Würfels und die Antworten der Spieler.
 Außerdem sollten immer die gleichen Spieler und immer die gleichen Fragen vorkommen, um den gleichen Spielverlauf reproduzieren zu können, hierfür eignet sich das Factory-Pattern.
